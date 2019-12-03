@@ -28,6 +28,7 @@ public:
 
 private:
     Message send(const std::string& json);
+    int uuid = 0;
 };
 
 } // namespace client

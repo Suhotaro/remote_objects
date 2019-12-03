@@ -36,6 +36,7 @@ void PhotoEditor::upload(const std::string& image) {
 
     object.put("object", "PhotoEditor");
     object.put("methode", "upload");
+    arguments.put("uuid", uuid);
     arguments.put("image", image);
     object.add_child("aruments", arguments);
 
@@ -48,6 +49,7 @@ void PhotoEditor::rotate(int degree) {
 
     object.put("object", "PhotoEditor");
     object.put("methode", "rotate");
+    arguments.put("uuid", uuid);
     arguments.put("degree", degree);
     object.add_child("aruments", arguments);
 

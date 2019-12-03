@@ -37,7 +37,7 @@ void Acceptor::unregister_transport(std::shared_ptr<Transport> transport) {
 }
 
 void Acceptor::do_accept() {
-    auto transport = std::make_shared<Client>(shared_from_this(), io_service);
+    auto transport = std::make_shared<Client>(shared_from_this(), server, io_service);
     acceptor.async_accept(transport->socket_get(),
         [this, transport](boost::system::error_code ec) {
             if (!ec) {
