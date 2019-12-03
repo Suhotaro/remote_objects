@@ -1,6 +1,7 @@
 
-#include "transport.hpp"
+#include "client.hpp"
 #include "message.hpp"
+#include "photo_editor.hpp"
 
 #include <iostream>
 #include <thread>
@@ -8,6 +9,11 @@
 int main() {    
     std::cout << "Client\n";
 
+    client::Client client;
+    std::shared_ptr<client::PhotoEditor> photo_editor = client.make_photo_editor();
+    
+
+/*
     try {
         boost::asio::io_service io_service;
 
@@ -23,11 +29,7 @@ int main() {
         char line[client::Message::max_body_length + 1];
         while (std::cin.getline(line, client::Message::max_body_length + 1))
         {
-            client::Message msg;
-            msg.body_length(std::strlen(line));
-            std::memcpy(msg.body(), line, msg.body_length());
-            msg.encode_header();
-            transport.send(msg);
+  
         }
 
         transport.stop();
@@ -36,6 +38,6 @@ int main() {
     catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << "\n";
     }
-
+*/
     return 0;
 }

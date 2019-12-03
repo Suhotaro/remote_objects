@@ -1,4 +1,6 @@
 #include "acceptor.hpp"
+#include "server.hpp"
+#include "client.hpp"
 
 #include <memory>
 #include <string>
@@ -6,9 +8,11 @@
 namespace server
 {
 
-Acceptor::Acceptor(boost::asio::io_service& _io_service,
+Acceptor::Acceptor(std::shared_ptr<Server> _server,
+    boost::asio::io_service& _io_service,
     const std::string _port)
-: io_service{_io_service}
+: server{_server}
+, io_service{_io_service}
 , acceptor{_io_service,
     boost::asio::ip::tcp::endpoint{boost::asio::ip::tcp::v4(), std::stoi(_port)}}
 , socket{_io_service}
@@ -33,7 +37,7 @@ void Acceptor::unregister_transport(std::shared_ptr<Transport> transport) {
 }
 
 void Acceptor::do_accept() {
-    auto transport = std::make_shared<Transport>(shared_from_this(), io_service);
+    auto transport = std::make_shared<Client>(shared_from_this(), io_service);
     acceptor.async_accept(transport->socket_get(),
         [this, transport](boost::system::error_code ec) {
             if (!ec) {

@@ -7,11 +7,14 @@
 namespace server
 {
 
+class Server;
+
 class Acceptor : public std::enable_shared_from_this<Acceptor>
 {
 public:
-    Acceptor(boost::asio::io_service&,
-            const std::string port);
+    Acceptor(std::shared_ptr<Server> server,
+        boost::asio::io_service&,
+        const std::string port);
 
     bool start();
     void stop();
@@ -22,6 +25,7 @@ public:
 private:
     void do_accept();
 
+    std::shared_ptr<Server> server;
     boost::asio::io_service& io_service;
     boost::asio::ip::tcp::socket socket;
     boost::asio::ip::tcp::acceptor acceptor;

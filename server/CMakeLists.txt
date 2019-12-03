@@ -9,7 +9,12 @@ find_package(Boost 1.65.1 REQUIRED system)
 include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(transport)
-aux_source_directory(transport transport_src)
+include_directories(objects)
+include_directories(client)
 
-add_executable(server main.cpp ${transport_src})
+aux_source_directory(transport transport_src)
+aux_source_directory(objects objects_src)
+aux_source_directory(client client_src)
+
+add_executable(server main.cpp server.cpp ${transport_src} ${objects_src} ${client_src})
 target_link_libraries(server ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

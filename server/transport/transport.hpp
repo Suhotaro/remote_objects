@@ -11,8 +11,7 @@ namespace server
 
 class Acceptor;
 
-class Transport : public std::enable_shared_from_this<Transport>
-{
+class Transport : public std::enable_shared_from_this<Transport> {
 using message_queue = std::deque<Message>;
 
 public:
@@ -21,6 +20,8 @@ public:
 
     bool start();
     void send(const Message& msg);
+
+    virtual void on_msg_received(const Message& msg) = 0;
 
     boost::asio::ip::tcp::socket& socket_get();
 

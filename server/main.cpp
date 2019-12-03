@@ -1,24 +1,24 @@
-#include <iostream>
+#include "server.hpp"
 
-#include "acceptor.hpp"
+#include <iostream>
+#include <boost/asio.hpp>
 
 int main() {
     std::cout << "Server\n";
 
-    try{
+    try {
         boost::asio::io_service io_service;
-        auto acceptor = std::make_shared<server::Acceptor>(io_service, "5001");
-        acceptor->start();
+        std::shared_ptr<server::Server> server = std::make_shared<server::Server>(io_service);
+        server->start();
 
         std::cout << "Server started\n";
-
+        
         io_service.run();
     }
     catch (std::exception& e)
     {
         std::cerr << "Exception: " << e.what() << "\n";
     }
-
 
     return 0;
 }

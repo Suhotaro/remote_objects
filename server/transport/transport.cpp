@@ -50,6 +50,7 @@ void Transport::do_read_body() {
         [this, self](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec) {
                 std::cout << read_msg.body() << std::endl;
+                on_msg_received(read_msg);
                 do_read_header();
             } else {
                 printf("ERROR: do_read_body(%s)\n", ec.message().c_str());
@@ -69,7 +70,7 @@ void Transport::do_write() {
                     do_write();
             } else {
                 printf("ERROR: do_write(%s)\n", ec.message().c_str());
-                acceptor->unregister_transport(self);                    
+                acceptor->unregister_transport(self);             
             }
     });
 }

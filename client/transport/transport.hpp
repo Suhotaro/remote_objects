@@ -13,13 +13,15 @@ public:
     Transport(boost::asio::io_service&,
             const std::string& ip,
             const std::string& port);
+    ~Transport() = default;
 
     bool start();
     void stop();
 
-    void send(const Message& data);
+    virtual void send(const Message& data);
+    virtual void on_msg_received(const Message& msg) = 0;
 
-private:
+protected:
     void do_read_header();
     void do_read_body();
 
