@@ -18,7 +18,7 @@ public:
     std::shared_ptr<AvlTree> objects_repository() { return tree; }
 
 private:
-    std::unique_ptr<Acceptor> acceptor;
+    std::shared_ptr<Acceptor> acceptor;
 
     boost::asio::io_service& io_service;
     std::shared_ptr<AvlTree> tree;

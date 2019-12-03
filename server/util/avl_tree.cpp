@@ -13,6 +13,7 @@ std::shared_ptr<Object> AvlTree::make_photo_editor() {
     tree.insert({o->id(), o});
 
     tree_mutex.unlock();
+    printf("SERVER: make_photo_editor id:%d\n", o->id());
     return o;
 }
 
@@ -23,6 +24,7 @@ std::shared_ptr<Object> AvlTree::make_stream() {
     tree.insert({o->id(), o});
     
     tree_mutex.unlock();
+    printf("SERVER: make_stream id:%d\n", o->id());
     return o;
 }
 

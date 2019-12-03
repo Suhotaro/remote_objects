@@ -13,6 +13,11 @@ Message to_msg(const std::string& json) {
     msg.body_length(json.length());
     std::memcpy(msg.body(), json.c_str(), msg.body_length());
     msg.encode_header();
+    return msg;
+}
+
+void dump(const Message& msg) {
+    printf("BUFFER: %s\n", msg.body());
 }
 
 } // namespace server

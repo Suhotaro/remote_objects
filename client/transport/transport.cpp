@@ -46,8 +46,10 @@ void Transport::do_read_header() {
     boost::asio::async_read(socket,
         boost::asio::buffer(read_msg.data(), Message::header_length),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
-            if (!ec && read_msg.decode_header())
+            if (!ec && read_msg.decode_header()) {
+                printf("CLIENT: receive header\n");
                 do_read_body();
+            }
             else {
                 printf("ERROR: do_read_header(%s)\n", ec.message().c_str());
                 socket.close();
@@ -61,8 +63,8 @@ void Transport::do_read_body() {
         boost::asio::buffer(read_msg.body(), read_msg.body_length()),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec) {
-                std::cout.write(read_msg.body(), read_msg.body_length());
-                std::cout << "\n";
+                printf("CLIENT: receive body\n");
+                on_msg_received(read_msg);
                 do_read_header();
             } else {
                 printf("ERROR: do_read_body(%s)\n", ec.message().c_str());

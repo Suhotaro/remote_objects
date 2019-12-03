@@ -10,7 +10,7 @@ Server::Server(boost::asio::io_service& _io_service)
 {}
 
 void Server::start() {
-    acceptor.reset(new Acceptor{shared_from_this(), io_service, "5001"});
+    acceptor = std::make_shared<Acceptor>(shared_from_this(), io_service, "5001");
     acceptor->start();
 }
 

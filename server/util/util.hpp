@@ -11,5 +11,8 @@ namespace server {
 std::string to_string(const boost::property_tree::ptree& tree);
 Message to_msg(const std::string& json);
 
+void dump(const Message& msg);
+
+
 
 } // namespace server

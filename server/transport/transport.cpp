@@ -1,5 +1,6 @@
 #include "transport.hpp"
 #include "acceptor.hpp"
+#include "util.hpp"
 
 // TODO: rm
 #include <iostream>
@@ -23,6 +24,8 @@ boost::asio::ip::tcp::socket& Transport::socket_get() {
 }
 
 void Transport::send(const Message& msg) {
+    printf("Transport::send\n");
+    dump(msg);
     bool write_in_progress = !write_msgs.empty();
     write_msgs.push_back(msg);
     if (!write_in_progress)

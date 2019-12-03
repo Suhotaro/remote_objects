@@ -18,10 +18,12 @@ void TransportSync::send(const Message& msg) {
         }
         result = promise.get_future();
         Transport::send(msg);
+
+        printf("CLIENT: wait result\n");
         reply_msg = result.get();
 
         Transport::stop();
-        io_service_thread.join();        
+        io_service_thread.join();
     }
     catch (std::exception& e) {
         printf("TransportSync::send: %s\n", e.what());
@@ -33,6 +35,7 @@ Message TransportSync::reply() {
 }
 
 void TransportSync::on_msg_received(const Message& msg) {
+    printf("CLIENT: receive result\n");
     promise.set_value(msg);
 }
 
