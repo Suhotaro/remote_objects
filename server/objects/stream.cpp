@@ -21,7 +21,7 @@ void Stream::on_msg_received(std::shared_ptr<Transport> trasnport, const Message
 
 void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::string& msg) {
     msgs.push_back(msg);
-    printf("SERVER: Stream::on_send_chat_msg %s\n", msg.c_str());
+    printf("SERVER: Stream(%d) chat msg>> \"%s\"\n", id(), msg.c_str());
 
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
@@ -37,7 +37,8 @@ void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::s
 
 void Stream::on_donate(std::shared_ptr<Transport> transport, int _donation) {
     donations.push_back(_donation);
-    printf("SERVER: Stream::on_donate %d\n", _donation);
+
+    printf("SERVER: Stream(%d) donation >> \"%d\"\n", id(), _donation);
 
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;

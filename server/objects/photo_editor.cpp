@@ -24,8 +24,8 @@ void PhotoEditor::on_msg_received(std::shared_ptr<Transport> trasnport, const Me
 }
 
 void PhotoEditor::on_upload(std::shared_ptr<Transport> transport, const std::string& _image) {
-    image = _image;
-    printf("SERVER: PhotoEditor::on_upload %s\n", image.c_str());
+    image = _image;    
+    printf("SERVER: PhotoEditor(%d) upload >> \"%s\"\n", id(), image.c_str());
 
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
@@ -40,7 +40,7 @@ void PhotoEditor::on_upload(std::shared_ptr<Transport> transport, const std::str
 
 void PhotoEditor::on_rotate(std::shared_ptr<Transport> transport, int _degree) {
     degree = _degree;
-    printf("SERVER: PhotoEditor::on_rotate %d\n", degree);
+    printf("SERVER: PhotoEditor(%d) rotate >> \"%d\"\n", id(), degree);
 
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
@@ -56,6 +56,8 @@ void PhotoEditor::on_rotate(std::shared_ptr<Transport> transport, int _degree) {
 void PhotoEditor::on_info(std::shared_ptr<Transport> transport) {
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
+
+    printf("SERVER: PhotoEditor(%d) info >> \"%s %d\"\n", id(), image.c_str(), degree);
 
     reply_object.put("object", "PhotoEditor");
     reply_object.put("methode", "info");

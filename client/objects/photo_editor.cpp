@@ -19,14 +19,13 @@ void PhotoEditor::create(int _uuid) {
     arguments.put("uuid", _uuid);
     object.add_child("arguments", arguments);
 
-    Message reply = send(to_string(object));
+    Message reply = send(to_msg(to_string(object)));
 
     boost::property_tree::ptree reply_tree;
     std::istringstream is (std::string(reply.body(), reply.body_length()));
     boost::property_tree::read_json (is, reply_tree);
 
     uuid = reply_tree.get<int>("arguments.uuid");
-    printf("PhotoEditor uuid %d\n", uuid);
 }
 
 void PhotoEditor::upload(const std::string& image) {
@@ -39,7 +38,7 @@ void PhotoEditor::upload(const std::string& image) {
     arguments.put("image", image);
     object.add_child("arguments", arguments);
 
-    send(to_string(object));
+    send(to_msg(to_string(object)));
 }
 
 void PhotoEditor::rotate(int degree) {
@@ -52,7 +51,7 @@ void PhotoEditor::rotate(int degree) {
     arguments.put("degree", degree);
     object.add_child("arguments", arguments);
 
-    send(to_string(object));
+    send(to_msg(to_string(object)));
 }
 
 std::shared_ptr<PhotoEditorInfo> PhotoEditor::info() {
@@ -64,7 +63,7 @@ std::shared_ptr<PhotoEditorInfo> PhotoEditor::info() {
     arguments.put("uuid", uuid);
     object.add_child("arguments", arguments);
 
-    Message reply = send(to_string(object));
+    Message reply = send(to_msg(to_string(object)));
 
     boost::property_tree::ptree reply_tree;
     std::istringstream is (std::string(reply.body(), reply.body_length()));
@@ -74,18 +73,10 @@ std::shared_ptr<PhotoEditorInfo> PhotoEditor::info() {
         reply_tree.get<int>("arguments.degree"));
 }
 
-Message PhotoEditor::send(const std::string& json) {
-    Message msg;
-    msg.body_length(json.length());
-    std::memcpy(msg.body(), json.c_str(), msg.body_length());
-    msg.encode_header();
- 
-    boost::asio::io_service io_service;
-    
-    TransportSync transport{io_service, "127.0.0.1", "5001"};
+Message PhotoEditor::send(const Message& msg) {    
+    TransportSync transport{"127.0.0.1", "5001"};
     transport.send(msg);
     Message reply = transport.reply();
-
     return reply;
 }
 

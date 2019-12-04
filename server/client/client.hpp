@@ -1,6 +1,9 @@
 #pragma once
 
 #include "transport.hpp"
+
+#include <boost/property_tree/ptree.hpp>
+
 #include <memory>
 
 namespace server {
@@ -16,6 +19,8 @@ public:
     virtual void on_msg_received(const Message& msg) override;
 
 private:
+    void create_new_object(const boost::property_tree::ptree& json_tree);
+
     std::shared_ptr<Server> server;
 };
 

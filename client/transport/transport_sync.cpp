@@ -3,18 +3,14 @@
 
 namespace client {
 
-TransportSync::TransportSync(boost::asio::io_service& _io_service
-, const std::string& _ip
+TransportSync::TransportSync(const std::string& _ip
 , const std::string& _port)
-: Transport{_io_service, _ip, _port}
+: Transport{service(), _ip, _port}
 {}
 
 void TransportSync::send(const Message& msg) {
     try {
-        io_service_thread = std::thread{[this]() {
-            boost::asio::io_service::work work(io_service);
-            io_service.run();
-        }};
+        Context::start();
 
         if (!Transport::start()) {
             printf("ERROR: TransportSync start\n");
@@ -22,14 +18,10 @@ void TransportSync::send(const Message& msg) {
         }
         result = promise.get_future();
         Transport::send(msg);
-
-        printf("CLIENT: wait result\n");
         reply_msg = result.get();
-        printf("CLIENT: continue\n");
 
         Transport::stop();
-        io_service.stop();
-        io_service_thread.join();
+        Context::stop();
     }
     catch (std::exception& e) {
         printf("TransportSync::send: %s\n", e.what());

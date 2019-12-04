@@ -1,16 +1,17 @@
 #pragma once
 
 #include "transport.hpp"
+#include "context.hpp"
+
 #include <future>
 
 namespace client
 {
 
-class TransportSync : protected Transport
+class TransportSync : public Context, protected Transport
 {
 public:
-    TransportSync(boost::asio::io_service& io_service,
-        const std::string& ip,
+    TransportSync(const std::string& ip,
         const std::string& port);
     virtual ~TransportSync() = default;
     
@@ -24,8 +25,6 @@ private:
     std::promise<Message> promise;
     std::future<Message> result;
     Message reply_msg;
-
-    std::thread io_service_thread;
 };
 
 } // namespace client

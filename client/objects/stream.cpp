@@ -30,9 +30,7 @@ void Stream::create(int _uuid) {
     arguments.put("uuid", _uuid);
     object.add_child("arguments", arguments);
 
-    boost::asio::io_service io_service;
-    
-    TransportSync transport{io_service, "127.0.0.1", "5001"};
+    TransportSync transport{"127.0.0.1", "5001"};
     transport.send(to_msg(to_string(object)));
     Message reply = transport.reply();
 

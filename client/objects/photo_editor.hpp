@@ -25,7 +25,7 @@ public:
     std::shared_ptr<PhotoEditorInfo> info();
 
 private:
-    Message send(const std::string& json);
+    Message send(const Message& msg);
     int uuid = 0;
 };
 
