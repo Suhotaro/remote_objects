@@ -19,7 +19,7 @@ Client::Client(std::shared_ptr<Acceptor> _acceptor,
 
 void Client::on_msg_received(const Message& msg) {
     boost::property_tree::ptree msg_tree;
-    std::istringstream is (msg.body());
+    std::istringstream is (std::string(msg.body(), msg.body_length()));
     boost::property_tree::read_json (is, msg_tree);
 
     if (msg_tree.get<std::string>("methode") == "create") {

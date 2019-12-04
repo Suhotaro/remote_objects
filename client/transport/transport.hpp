@@ -15,10 +15,10 @@ public:
             const std::string& port);
     ~Transport() = default;
 
-    bool start();
+    void start();
     void stop();
 
-    virtual void send(const Message& data);
+    void send(const Message& data);
     virtual void on_msg_received(const Message& msg) = 0;
 
 protected:

@@ -28,18 +28,17 @@ void Transport::send(const Message& _data) {
         });
 }
 
-bool Transport::start() {
+void Transport::start() {
     boost::system::error_code ec;
     socket.connect(boost::asio::ip::tcp::endpoint{boost::asio::ip::address::from_string(ip),
             std::stoi(port)},
         ec);
     if (ec) {
         printf("ERROR: connect(%s)\n", ec.message().c_str());
-        return false;
+        exit(1);
     }
 
     do_read_header();
-    return true;
 }
 
 void Transport::do_read_header() {
@@ -47,11 +46,9 @@ void Transport::do_read_header() {
         boost::asio::buffer(read_msg.data(), Message::header_length),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec && read_msg.decode_header()) {
-                printf("CLIENT: receive header\n");
                 do_read_body();
             }
             else {
-                printf("ERROR: do_read_header(%s)\n", ec.message().c_str());
                 socket.close();
                 //exit(1);
             }
@@ -63,7 +60,6 @@ void Transport::do_read_body() {
         boost::asio::buffer(read_msg.body(), read_msg.body_length()),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec) {
-                printf("CLIENT: receive body: %s\n", std::string(read_msg.body(), read_msg.body_length()).c_str());
                 on_msg_received(read_msg);
                 do_read_header();
             } else {

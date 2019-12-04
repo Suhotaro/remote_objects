@@ -31,8 +31,7 @@ void Stream::create(int _uuid) {
     object.add_child("arguments", arguments);
 
     TransportSync transport{"127.0.0.1", "5001"};
-    transport.send(to_msg(to_string(object)));
-    Message reply = transport.reply();
+    Message reply = transport.send(to_msg(to_string(object)));
 
     boost::property_tree::ptree reply_tree;
     std::istringstream is (std::string(reply.body(), reply.body_length()));
@@ -70,7 +69,7 @@ void Stream::donate(int _donation) {
 
 void Stream::on_msg_received(const Message& msg) {
     boost::property_tree::ptree msg_tree;
-    std::istringstream is (msg.body());
+    std::istringstream is (std::string(msg.body(), msg.body_length()));
     boost::property_tree::read_json (is, msg_tree);
 
     if (msg_tree.get<std::string>("methode") == "on_chat_msg")

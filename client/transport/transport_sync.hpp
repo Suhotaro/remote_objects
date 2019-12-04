@@ -15,9 +15,7 @@ public:
         const std::string& port);
     virtual ~TransportSync() = default;
     
-    virtual void send(const Message&) override;
-
-    Message reply();
+    Message send(const Message&);
 
 private:
     virtual void on_msg_received(const Message&) override;

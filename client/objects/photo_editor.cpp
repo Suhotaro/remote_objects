@@ -75,9 +75,7 @@ std::shared_ptr<PhotoEditorInfo> PhotoEditor::info() {
 
 Message PhotoEditor::send(const Message& msg) {    
     TransportSync transport{"127.0.0.1", "5001"};
-    transport.send(msg);
-    Message reply = transport.reply();
-    return reply;
+    return transport.send(msg);
 }
 
 } // namespace client
