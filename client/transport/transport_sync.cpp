@@ -1,4 +1,5 @@
 #include "transport_sync.hpp"
+#include "context.hpp"
 
 namespace client {
 

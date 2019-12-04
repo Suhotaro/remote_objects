@@ -35,8 +35,8 @@ void Client::on_msg_received(const Message& msg) {
             reply_object.put("object", "PhotoEditor");
             reply_object.add_child("arguments", reply_arguments);
         } else if (msg_tree.get<std::string>("object") == "Stream") {
-            auto photo_editor = std::dynamic_pointer_cast<PhotoEditor>(server->objects_repository()->make_stream());
-            reply_arguments.put("uuid", photo_editor->id());
+            auto stream = std::dynamic_pointer_cast<Stream>(server->objects_repository()->make_stream());
+            reply_arguments.put("uuid", stream->id());
             reply_object.put("object", "Stream");
             reply_object.add_child("arguments", reply_arguments);
         }

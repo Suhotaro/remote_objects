@@ -13,6 +13,7 @@ public:
 private:
     void on_upload(std::shared_ptr<Transport>, const std::string& image);
     void on_rotate(std::shared_ptr<Transport>, int degree);
+    void on_info(std::shared_ptr<Transport>);
 
     std::string image;
     int degree = 0;

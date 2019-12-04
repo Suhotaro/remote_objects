@@ -14,5 +14,8 @@ aux_source_directory(transport transport_src)
 include_directories(objects)
 aux_source_directory(objects objects_src)
 
-add_executable(client main.cpp ${transport_src} ${objects_src})
+include_directories(utils)
+aux_source_directory(utils utils_src)
+
+add_executable(client main.cpp ${utils_src} ${objects_src} ${transport_src})
 target_link_libraries(client ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})

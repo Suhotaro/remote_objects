@@ -1,6 +1,6 @@
 #include "util.hpp"
 
-namespace server {
+namespace client {
 
 std::string to_string(const boost::property_tree::ptree& tree)  {
     std::ostringstream oss;
@@ -21,4 +21,4 @@ void dump(const Message& msg) {
     printf("BUFFER: %s\n", s.c_str());
 }
 
-} // namespace server
+} // namespace client

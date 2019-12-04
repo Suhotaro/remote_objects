@@ -63,7 +63,7 @@ void Transport::do_read_body() {
         boost::asio::buffer(read_msg.body(), read_msg.body_length()),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec) {
-                printf("CLIENT: receive body\n");
+                printf("CLIENT: receive body: %s\n", std::string(read_msg.body(), read_msg.body_length()).c_str());
                 on_msg_received(read_msg);
                 do_read_header();
             } else {

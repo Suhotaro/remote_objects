@@ -7,8 +7,6 @@
 
 namespace client {
 
-class TransportSync;
-
 struct PhotoEditorInfo {
     PhotoEditorInfo(const std::string& _image, int _degree) :
         image{_image}, degree{_degree}

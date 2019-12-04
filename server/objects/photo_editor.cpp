@@ -19,6 +19,8 @@ void PhotoEditor::on_msg_received(std::shared_ptr<Transport> trasnport, const Me
         on_upload(trasnport, msg_tree.get<std::string>("arguments.image"));
     else if (msg_tree.get<std::string>("methode") == "rotate")
         on_rotate(trasnport, msg_tree.get<int>("arguments.degree"));
+    else if (msg_tree.get<std::string>("methode") == "info")
+        on_info(trasnport);
 }
 
 void PhotoEditor::on_upload(std::shared_ptr<Transport> transport, const std::string& _image) {
@@ -46,6 +48,20 @@ void PhotoEditor::on_rotate(std::shared_ptr<Transport> transport, int _degree) {
     reply_object.put("object", "PhotoEditor");
     reply_object.put("methode", "rotated");
     reply_arguments.put("uuid", id());
+    reply_object.add_child("arguments", reply_arguments);
+
+    transport->send(to_msg(to_string(reply_object)));    
+}
+
+void PhotoEditor::on_info(std::shared_ptr<Transport> transport) {
+    boost::property_tree::ptree reply_object;
+    boost::property_tree::ptree reply_arguments;
+
+    reply_object.put("object", "PhotoEditor");
+    reply_object.put("methode", "info");
+    reply_arguments.put("uuid", id());
+    reply_arguments.put("image", image);
+    reply_arguments.put("degree", degree);
     reply_object.add_child("arguments", reply_arguments);
 
     transport->send(to_msg(to_string(reply_object)));    

@@ -1,0 +1,16 @@
+#pragma once
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <sstream>
+
+#include "message.hpp"
+
+namespace client {
+
+std::string to_string(const boost::property_tree::ptree& tree);
+Message to_msg(const std::string& json);
+
+void dump(const Message& msg);
+
+} // namespace client

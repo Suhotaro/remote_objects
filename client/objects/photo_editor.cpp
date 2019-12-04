@@ -1,5 +1,6 @@
 #include "photo_editor.hpp"
 #include "transport_sync.hpp"
+#include "util.hpp"
 
 #include <thread>
 
@@ -7,16 +8,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <sstream>
 
-// todo rm
-#include <iostream>
-
 namespace client {
-    
-static std::string to_string(const boost::property_tree::ptree& tree)  {
-    std::ostringstream oss;
-    boost::property_tree::write_json(oss, tree, false);
-    return oss.str();
-}
 
 void PhotoEditor::create(int _uuid) {
     boost::property_tree::ptree object;
@@ -30,7 +22,7 @@ void PhotoEditor::create(int _uuid) {
     Message reply = send(to_string(object));
 
     boost::property_tree::ptree reply_tree;
-    std::istringstream is (reply.body());
+    std::istringstream is (std::string(reply.body(), reply.body_length()));
     boost::property_tree::read_json (is, reply_tree);
 
     uuid = reply_tree.get<int>("arguments.uuid");
@@ -69,12 +61,14 @@ std::shared_ptr<PhotoEditorInfo> PhotoEditor::info() {
 
     object.put("object", "PhotoEditor");
     object.put("methode", "info");
+    arguments.put("uuid", uuid);
+    object.add_child("arguments", arguments);
 
     Message reply = send(to_string(object));
 
     boost::property_tree::ptree reply_tree;
-    std::istringstream is (reply.body());
-    boost::property_tree::read_json (is, reply_tree);
+    std::istringstream is (std::string(reply.body(), reply.body_length()));
+    boost::property_tree::read_json (is, reply_tree);   
 
     return std::make_shared<PhotoEditorInfo>(reply_tree.get<std::string>("arguments.image"),
         reply_tree.get<int>("arguments.degree"));
