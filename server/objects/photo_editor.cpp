@@ -31,7 +31,7 @@ void PhotoEditor::on_upload(std::shared_ptr<Transport> transport, const std::str
     reply_object.put("object", "PhotoEditor");
     reply_object.put("methode", "upload");
     reply_arguments.put("uuid", id());
-    reply_object.add_child("aruments", reply_arguments);
+    reply_object.add_child("arguments", reply_arguments);
 
     transport->send(to_msg(to_string(reply_object)));
 }
@@ -46,7 +46,7 @@ void PhotoEditor::on_rotate(std::shared_ptr<Transport> transport, int _degree) {
     reply_object.put("object", "PhotoEditor");
     reply_object.put("methode", "rotated");
     reply_arguments.put("uuid", id());
-    reply_object.add_child("aruments", reply_arguments);
+    reply_object.add_child("arguments", reply_arguments);
 
     transport->send(to_msg(to_string(reply_object)));    
 }

@@ -53,7 +53,7 @@ void Transport::do_read_header() {
             else {
                 printf("ERROR: do_read_header(%s)\n", ec.message().c_str());
                 socket.close();
-                exit(1);
+                //exit(1);
             }
         });
 }
@@ -69,7 +69,7 @@ void Transport::do_read_body() {
             } else {
                 printf("ERROR: do_read_body(%s)\n", ec.message().c_str());
                 socket.close();
-                exit(1);
+                //exit(1);
             }
         });
 }

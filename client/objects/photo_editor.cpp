@@ -25,9 +25,16 @@ void PhotoEditor::create(int uuid) {
     object.put("object", "PhotoEditor");
     object.put("methode", "create");
     arguments.put("uuid", uuid);
-    object.add_child("aruments", arguments);
+    object.add_child("arguments", arguments);
 
-    send(to_string(object));
+    Message reply = send(to_string(object));
+
+    boost::property_tree::ptree reply_tree;
+    std::istringstream is (reply.body());
+    boost::property_tree::read_json (is, reply_tree);
+
+    uuid = reply_tree.get<int>("arguments.uuid");
+    printf("PhotoEditor uuid %d\n", uuid);
 }
 
 void PhotoEditor::upload(const std::string& image) {
@@ -38,7 +45,7 @@ void PhotoEditor::upload(const std::string& image) {
     object.put("methode", "upload");
     arguments.put("uuid", uuid);
     arguments.put("image", image);
-    object.add_child("aruments", arguments);
+    object.add_child("arguments", arguments);
 
     send(to_string(object));
 }
@@ -51,7 +58,7 @@ void PhotoEditor::rotate(int degree) {
     object.put("methode", "rotate");
     arguments.put("uuid", uuid);
     arguments.put("degree", degree);
-    object.add_child("aruments", arguments);
+    object.add_child("arguments", arguments);
 
     send(to_string(object));
 }
@@ -80,12 +87,10 @@ Message PhotoEditor::send(const std::string& json) {
     msg.encode_header();
  
     boost::asio::io_service io_service;
+    
     TransportSync transport{io_service, "127.0.0.1", "5001"};
     transport.send(msg);
     Message reply = transport.reply();
-
-    std::cout << "Received" << std::endl;
-    std::cout << reply.body() << std::endl;
 
     return reply;
 }

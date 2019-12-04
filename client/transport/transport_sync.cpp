@@ -10,7 +10,10 @@ TransportSync::TransportSync(boost::asio::io_service& _io_service
 
 void TransportSync::send(const Message& msg) {
     try {
-        io_service_thread = std::thread{[this](){ io_service.run(); }};
+        io_service_thread = std::thread{[this]() {
+            boost::asio::io_service::work work(io_service);
+            io_service.run();
+        }};
 
         if (!Transport::start()) {
             printf("ERROR: TransportSync start\n");
@@ -21,8 +24,10 @@ void TransportSync::send(const Message& msg) {
 
         printf("CLIENT: wait result\n");
         reply_msg = result.get();
+        printf("CLIENT: continue\n");
 
         Transport::stop();
+        io_service.stop();
         io_service_thread.join();
     }
     catch (std::exception& e) {
@@ -35,7 +40,6 @@ Message TransportSync::reply() {
 }
 
 void TransportSync::on_msg_received(const Message& msg) {
-    printf("CLIENT: receive result\n");
     promise.set_value(msg);
 }
 
