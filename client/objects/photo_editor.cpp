@@ -18,13 +18,13 @@ static std::string to_string(const boost::property_tree::ptree& tree)  {
     return oss.str();
 }
 
-void PhotoEditor::create(int uuid) {
+void PhotoEditor::create(int _uuid) {
     boost::property_tree::ptree object;
     boost::property_tree::ptree arguments;
 
     object.put("object", "PhotoEditor");
     object.put("methode", "create");
-    arguments.put("uuid", uuid);
+    arguments.put("uuid", _uuid);
     object.add_child("arguments", arguments);
 
     Message reply = send(to_string(object));
