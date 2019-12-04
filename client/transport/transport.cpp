@@ -71,8 +71,10 @@ void Transport::do_read_body() {
 }
 
 void Transport::stop() {
-    socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
-    socket.close();
+    try {
+        socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+        socket.close();
+    } catch(...) {}
 }
 
 }//namespace client

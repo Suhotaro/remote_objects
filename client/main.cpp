@@ -11,6 +11,7 @@ int main() {
 
     client::Client client;
 
+    // async object
     std::shared_ptr<client::Stream> stream = client.make_stream();
     stream->start();
     stream->send_chat_msg("hello subs");
@@ -20,16 +21,14 @@ int main() {
 
     stream->stop();
 
-
-/*    
+    // sync object
     std::shared_ptr<client::PhotoEditor> photo_editor = client.make_photo_editor();
-
     photo_editor->upload("funy_cat.bmp");
     photo_editor->rotate(90);
     auto photo_editor_info = photo_editor->info();
     printf("Photo Editor info: %s %d\n",
         photo_editor_info->image.c_str(),
          photo_editor_info->degree);
-*/    
+    
     return 0;
 }

@@ -5,14 +5,18 @@ namespace client
 
 void Context::start() {
     io_service_thread = std::thread{[this]() {
-        boost::asio::io_service::work work(io_service);
-        io_service.run();
+        try {
+            boost::asio::io_service::work work(io_service);
+            io_service.run();
+        } catch(...) {}
     }};
 }
 
 void Context::stop() {
-    io_service.stop();
-    io_service_thread.join();
+    try {
+        io_service.stop();
+        io_service_thread.join();    
+    } catch(...) {}    
 }
 
 } // namespace client
