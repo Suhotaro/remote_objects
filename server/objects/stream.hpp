@@ -17,7 +17,7 @@ private:
     void on_donate(std::shared_ptr<Transport>, int degree);
 
     std::list<std::string> msgs;
-    std::list<int> donations;
+    int donations = 0;
 };
 
 } // namespace server

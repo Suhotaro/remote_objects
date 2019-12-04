@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "message.hpp"
+#include "object.hpp"
 
 namespace client {
 
@@ -15,7 +16,7 @@ struct PhotoEditorInfo {
     int degree = 0;
 };
 
-class PhotoEditor final {
+class PhotoEditor final : public Object {
 public:
     void create(int uuid = 0);
 
@@ -26,7 +27,6 @@ public:
 
 private:
     Message send(const Message& msg);
-    int uuid = 0;
 };
 
 } // namespace client

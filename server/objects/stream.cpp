@@ -16,7 +16,7 @@ void Stream::on_msg_received(std::shared_ptr<Transport> trasnport, const Message
     if (msg_tree.get<std::string>("methode") == "send_chat_msg")
         on_send_chat_msg(trasnport, msg_tree.get<std::string>("arguments.msg"));
     else if (msg_tree.get<std::string>("methode") == "donate")
-        on_donate(trasnport, msg_tree.get<int>("arguments.value"));
+        on_donate(trasnport, msg_tree.get<int>("arguments.donation"));
 }
 
 void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::string& msg) {
@@ -36,7 +36,7 @@ void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::s
 }
 
 void Stream::on_donate(std::shared_ptr<Transport> transport, int _donation) {
-    donations.push_back(_donation);
+    donations += _donation;
 
     printf("SERVER: Stream(%d) donation \"%d\"\n", id(), _donation);
 
@@ -46,7 +46,7 @@ void Stream::on_donate(std::shared_ptr<Transport> transport, int _donation) {
     reply_object.put("object", "Stream");
     reply_object.put("methode", "on_donation");
     reply_arguments.put("uuid", id());
-    reply_arguments.put("donation", _donation);
+    reply_arguments.put("donation", donations);
     reply_object.add_child("arguments", reply_arguments);
 
     transport->send(to_msg(to_string(reply_object)));

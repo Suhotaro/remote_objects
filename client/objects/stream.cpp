@@ -75,7 +75,7 @@ void Stream::on_msg_received(const Message& msg) {
     if (msg_tree.get<std::string>("methode") == "on_chat_msg")
         on_chat_msg(msg_tree.get<std::string>("arguments.msg"));
     else if (msg_tree.get<std::string>("methode") == "on_donation")
-        on_donation(msg_tree.get<int>("arguments.value"));
+        on_donation(msg_tree.get<int>("arguments.donation"));
 }
 
 void Stream::on_chat_msg(std::string msg) {

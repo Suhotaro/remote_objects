@@ -3,10 +3,11 @@
 #include "transport.hpp"
 #include "context.hpp"
 #include "message.hpp"
+#include "object.hpp"
 
 namespace client {
 
-class Stream final : public Context, public Transport {
+class Stream final : public Object, public Context, public Transport {
 public:
     Stream();
 
@@ -23,8 +24,6 @@ private:
 
     void on_chat_msg(std::string msg);
     void on_donation(int donation);
-
-    int uuid = 0;
 };
 
 } // namespace client

@@ -41,21 +41,34 @@ void Client::on_msg_received(const Message& msg) {
 void Client::create_new_object(const boost::property_tree::ptree& json_tree) {
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
-    reply_object.put("methode", "create");
 
+    reply_object.put("methode", "create");
+    int uuid = json_tree.get<int>("arguments.uuid");
     // TODO: fix double create
     if (json_tree.get<std::string>("object") == "PhotoEditor") {
-        auto photo_editor = std::dynamic_pointer_cast<PhotoEditor>(server->objects_repository()->make_photo_editor());
-        reply_arguments.put("uuid", photo_editor->id());
+        auto object = server->objects_repository()->find(uuid);
+        if (object) {
+            reply_arguments.put("uuid", object->id());
+            printf("SERVER: PhotoEditor(%d) bind\n", uuid);
+        } else {
+            auto photo_editor = std::dynamic_pointer_cast<PhotoEditor>(server->objects_repository()->make_photo_editor());
+            reply_arguments.put("uuid", photo_editor->id());
+        }
         reply_object.put("object", "PhotoEditor");
-        reply_object.add_child("arguments", reply_arguments);
+        
     } else if (json_tree.get<std::string>("object") == "Stream") {
-        auto stream = std::dynamic_pointer_cast<Stream>(server->objects_repository()->make_stream());
-        reply_arguments.put("uuid", stream->id());
+        auto object = server->objects_repository()->find(uuid);
+        if (object) {
+            reply_arguments.put("uuid", object->id());
+            printf("SERVER: Server(%d) bind\n", uuid);
+        } else {
+            auto stream = std::dynamic_pointer_cast<Stream>(server->objects_repository()->make_stream());
+            reply_arguments.put("uuid", stream->id());
+        }        
         reply_object.put("object", "Stream");
-        reply_object.add_child("arguments", reply_arguments);
     }
 
+    reply_object.add_child("arguments", reply_arguments);
     send(to_msg(to_string(reply_object)));
 }
 
