@@ -24,8 +24,7 @@ boost::asio::ip::tcp::socket& Transport::socket_get() {
 }
 
 void Transport::send(const Message& msg) {
-    printf("Transport::send\n");
-    dump(msg);
+    //dump(msg);
     bool write_in_progress = !write_msgs.empty();
     write_msgs.push_back(msg);
     if (!write_in_progress)
@@ -40,7 +39,6 @@ void Transport::do_read_header() {
             if (!ec && read_msg.decode_header())
                 do_read_body();
             else {
-                printf("ERROR: do_read_header(%s)\n", ec.message().c_str());
                 acceptor->unregister_transport(self);
             }
         });
@@ -52,7 +50,6 @@ void Transport::do_read_body() {
         boost::asio::buffer(read_msg.body(), read_msg.body_length()),
         [this, self](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec) {
-                std::cout << read_msg.body() << std::endl;
                 on_msg_received(read_msg);
                 do_read_header();
             } else {

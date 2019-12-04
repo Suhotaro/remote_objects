@@ -13,9 +13,10 @@ int main() {
 
     std::shared_ptr<client::Stream> stream = client.make_stream();
     stream->start();
-    stream->send_chat_msg("hi to all");
-    stream->send_chat_msg("hi to all");
-    sleep(5);
+    stream->send_chat_msg("hello subs");
+    stream->send_chat_msg("Today I stream for 10 hours");
+    stream->send_chat_msg("Buy");
+    sleep(5); // wait async reply
 
     stream->stop();
 

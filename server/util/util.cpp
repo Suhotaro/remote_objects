@@ -18,7 +18,6 @@ Message to_msg(const std::string& json) {
 
 void dump(const Message& msg) {
     std::string s(msg.body(), msg.body_length());
-    printf("BUFFER: %s\n", s.c_str());
 }
 
 } // namespace server
