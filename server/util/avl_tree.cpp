@@ -29,7 +29,6 @@ std::shared_ptr<Object> AvlTree::make_stream() {
 }
 
 std::shared_ptr<Object> AvlTree::find(int uuid) {
-    printf("AAAAAAAAAAAA %d\n", uuid);
     auto res = tree.find(uuid);
     if (res == tree.end())
         return std::shared_ptr<Object>();

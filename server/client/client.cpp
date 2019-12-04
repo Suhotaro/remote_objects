@@ -47,10 +47,12 @@ void Client::on_msg_received(const Message& msg) {
 
     if (msg_tree.get<std::string>("object") == "PhotoEditor") {
         auto photo_editor = std::dynamic_pointer_cast<PhotoEditor>(server->objects_repository()->find(msg_tree.get<int>("arguments.uuid")));
-        photo_editor->on_msg_received(shared_from_this(), msg);
+        if (photo_editor)
+            photo_editor->on_msg_received(shared_from_this(), msg);
     } else if (msg_tree.get<std::string>("object") == "Stream") {
         auto stream = std::dynamic_pointer_cast<Stream>(server->objects_repository()->find(msg_tree.get<int>("arguments.uuid")));
-        stream->on_msg_received(shared_from_this(), msg);
+        if (stream)
+            stream->on_msg_received(shared_from_this(), msg);
     }
 }
 
