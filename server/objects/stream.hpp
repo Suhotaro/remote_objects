@@ -3,6 +3,8 @@
 #include "object.hpp"
 
 #include <list>
+#include <atomic>
+#include <mutex>
 
 namespace server {
 
@@ -16,8 +18,9 @@ private:
     void on_send_chat_msg(std::shared_ptr<Transport>, const std::string& image);
     void on_donate(std::shared_ptr<Transport>, int degree);
 
+    std::mutex msgs_mutex;
     std::list<std::string> msgs;
-    int donations = 0;
+    std::atomic<int> donations{0};
 };
 
 } // namespace server

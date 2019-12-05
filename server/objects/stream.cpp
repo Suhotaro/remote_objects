@@ -20,7 +20,10 @@ void Stream::on_msg_received(std::shared_ptr<Transport> trasnport, const Message
 }
 
 void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::string& msg) {
+    msgs_mutex.lock();
     msgs.push_back(msg);
+    msgs_mutex.unlock();
+
     printf("SERVER: Stream(%d) msg \"%s\"\n", id(), msg.c_str());
 
     boost::property_tree::ptree reply_object;
@@ -38,7 +41,7 @@ void Stream::on_send_chat_msg(std::shared_ptr<Transport> transport, const std::s
 void Stream::on_donate(std::shared_ptr<Transport> transport, int _donation) {
     donations += _donation;
 
-    printf("SERVER: Stream(%d) donation \"%d\"\n", id(), _donation);
+    printf("SERVER: Stream(%d) donation \"%d\"\n", id(), donations.load());
 
     boost::property_tree::ptree reply_object;
     boost::property_tree::ptree reply_arguments;
@@ -46,7 +49,7 @@ void Stream::on_donate(std::shared_ptr<Transport> transport, int _donation) {
     reply_object.put("object", "Stream");
     reply_object.put("methode", "on_donation");
     reply_arguments.put("uuid", id());
-    reply_arguments.put("donation", donations);
+    reply_arguments.put("donation", donations.load());
     reply_object.add_child("arguments", reply_arguments);
 
     transport->send(to_msg(to_string(reply_object)));

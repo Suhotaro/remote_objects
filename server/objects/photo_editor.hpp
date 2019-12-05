@@ -1,6 +1,8 @@
 #pragma once
 
 #include "object.hpp"
+#include <atomic>
+#include <mutex>
 
 namespace server {
 
@@ -15,8 +17,10 @@ private:
     void on_rotate(std::shared_ptr<Transport>, int degree);
     void on_info(std::shared_ptr<Transport>);
 
+    std::mutex image_mutex;
     std::string image;
-    int degree = 0;
+
+    std::atomic<int> degree{0};
 };
 
 } // namespace server
